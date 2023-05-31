@@ -10,5 +10,6 @@ namespace ControleFinanceiroAPI.Context
         }
 
         public DbSet<Transaction>? Transactions { get; set; }
+        public DbSet<UserCredential>? UserCredentials { get; set; }
     }
 }

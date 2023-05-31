@@ -1,6 +1,9 @@
 using ControleFinanceiroAPI.Context;
-using Microsoft.EntityFrameworkCore;
 using ControleFinanceiroAPI.Util;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +34,20 @@ builder.Services.AddCors();
 var postgresSqlConn = builder.Configuration.GetConnectionString("DefaultString");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(postgresSqlConn));
 
+//JWT definições
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+    AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidAudience = builder.Configuration["TokenConfiguration:Audience"],
+        ValidIssuer = builder.Configuration["TokenConfiguration:Issuer"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    });
+
 var app = builder.Build();
 
 //app.UseCors(opt => opt.WithOrigins("https://www.apirequest.io").WithMethods("GET"));
@@ -43,6 +60,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
