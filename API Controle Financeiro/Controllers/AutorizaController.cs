@@ -38,14 +38,12 @@ namespace ControleFinanceiroAPI.Controllers
             }
             catch (Exception)
             {
-
                 throw;
-            }
-            
+            }         
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(UserDTO uc)
+        public async Task<ActionResult> LoginApi(UserDTO uc)
         {
             try
             {
@@ -54,28 +52,31 @@ namespace ControleFinanceiroAPI.Controllers
 
                 if (userAutenticado == null)
                 {
+                    UtilHelper.myLogTxtRequest("(LoginApi) - Login API (Unauthorized)", _config, HttpContext);
                     return Unauthorized("Usuário ou senha inválido!");
                 } 
                 else
                 {
-                    var ret = GeraToken(userAutenticado);
-                    if (ret.Authenticated)
+                    var ret = await GeraToken(userAutenticado);
+                    if (ret != null && ret.Authenticated)
                     {
+                        UtilHelper.myLogTxtRequest("(LoginApi) - Login API. Token gerado! (Ok)", _config, HttpContext);
                         return Ok(ret.Token);
                     }
-                    
+
+                    UtilHelper.myLogTxtRequest("(LoginApi) - Login API (BadRequest) ", _config, HttpContext);
                     return BadRequest();
                 }
                   
             }
             catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error Internal Server");
+                UtilHelper.myLogTxtRequest("(LoginApi) - Login API (Internal Server Error) ", _config, HttpContext);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao processar no servidor \n" + ex.Message + "\n" + ex.StackTrace);
             }   
         }
 
-        private UsuarioToken GeraToken(UserCredential uc)
+        private async Task<UsuarioToken?> GeraToken(UserCredential uc)
         {
             try
             {
