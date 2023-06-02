@@ -1,6 +1,8 @@
 ﻿using ControleFinanceiroAPI.Context;
 using ControleFinanceiroAPI.Models;
 using ControleFinanceiroAPI.Util;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ namespace ControleFinanceiroAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     //[EnableCors("PermitirApiRequest")]
     public class TransactionController : Controller
     {
