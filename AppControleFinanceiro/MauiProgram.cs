@@ -11,6 +11,7 @@ public static class MauiProgram
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
+
 		builder
 			.UseMauiApp<App>()
             .UseMauiCommunityToolkit()
@@ -38,6 +39,7 @@ public static class MauiProgram
 				}
 			);
 		mauiAppBuilder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
+		mauiAppBuilder.Services.AddTransient<ITransactionRequestRepository, TransactionRequestRepository>();
 		return mauiAppBuilder;
 	}
 

@@ -2,15 +2,11 @@
 using ControleFinanceiroAPI.DTOs;
 using ControleFinanceiroAPI.Models;
 using ControleFinanceiroAPI.Util;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.WebSockets;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ControleFinanceiroAPI.Controllers
 {

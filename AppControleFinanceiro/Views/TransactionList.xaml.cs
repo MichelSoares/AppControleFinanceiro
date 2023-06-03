@@ -8,12 +8,13 @@ public partial class TransactionList : ContentPage
 {
 
     private readonly ITransactionRepository _transactionRepositor;
+    private readonly ITransactionRequestRepository _transactionRequestRepository;
 
 
-    public TransactionList(ITransactionRepository transactionRepository)
+    public TransactionList(ITransactionRepository transactionRepository, ITransactionRequestRepository transactionRequestRepository)
     {
-
         _transactionRepositor = transactionRepository;
+        _transactionRequestRepository = transactionRequestRepository;
         InitializeComponent();
 
         Reload();
@@ -22,11 +23,12 @@ public partial class TransactionList : ContentPage
         {
             Reload();
         }));
+        
     }
 
     private void Reload()
     {
-        var items = _transactionRepositor.GetAll();
+        /*var items = _transactionRepositor.GetAll();
         CollectionViewTransaction.ItemsSource = items;
 
          double income = items.Where(a => a.Type == Model.TransactionType.Income).Sum(a => a.Value);
@@ -36,7 +38,11 @@ public partial class TransactionList : ContentPage
 
         LabelIncome.Text = income.ToString("C");
         LabelExpense.Text= expense.ToString("C");
-        LabelBalance.Text = balance.ToString("C");
+        LabelBalance.Text = balance.ToString("C");*/
+
+        var items = _transactionRequestRepository.GetAll();
+        CollectionViewTransaction.ItemsSource = items;
+
     }
 
     private void OnButtonClicked_To_TransactionAdd(object sender, EventArgs e)
