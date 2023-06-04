@@ -52,10 +52,10 @@ public partial class TransactionAdd : ContentPage
     {
         Transaction transaction = new Transaction()
         {
-            Type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expense,
-            Name = EntryName.Text,
-            Date = DatePickerDate.Date,
-            Value = Convert.ToDouble(EntryValue.Text)
+            type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expense,
+            name = EntryName.Text,
+            date = DatePickerDate.Date,
+            value = Convert.ToDouble(EntryValue.Text)
         };
 
         //var repository = Handler.MauiContext.Services.GetService<ITransactionRepository>();

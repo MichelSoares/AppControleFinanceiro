@@ -16,7 +16,7 @@ namespace AppControleFinanceiro.Libraries.Converters
 
             if (transaction == null) return Colors.Black;
 
-            if (transaction.Type == TransactionType.Income)
+            if (transaction.type == TransactionType.Income)
             {
                 //return Color.FromHex("#939E5A");
                 return Color.FromArgb("#939E5A");

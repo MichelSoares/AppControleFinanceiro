@@ -26,7 +26,7 @@ public partial class TransactionList : ContentPage
         
     }
 
-    private void Reload()
+    private async Task Reload()
     {
         /*var items = _transactionRepositor.GetAll();
         CollectionViewTransaction.ItemsSource = items;
@@ -40,7 +40,7 @@ public partial class TransactionList : ContentPage
         LabelExpense.Text= expense.ToString("C");
         LabelBalance.Text = balance.ToString("C");*/
 
-        var items = _transactionRequestRepository.GetAll();
+        var items = await _transactionRequestRepository.GetAllAsync();
         CollectionViewTransaction.ItemsSource = items;
 
     }

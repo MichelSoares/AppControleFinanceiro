@@ -9,12 +9,13 @@ namespace AppControleFinanceiro.Model
 {
     public class Transaction
     {
-        [BsonId]
-        public int Id { get; set; }
-        public TransactionType Type { get; set; }
-        public string Name { get; set; }
-        public DateTimeOffset Date { get; set; }
-        public double Value { get; set; }
+        //[BsonId]
+        //OBS precisei deixar os atributos em minusculo visto que o Postgres é case sensitive, ou seja, quando for necessário criar querys no banco seria necessário fazer um scape das letras maisculas.
+        public int id { get; set; }
+        public TransactionType type { get; set; }
+        public string name { get; set; }
+        public DateTimeOffset date { get; set; }
+        public double value { get; set; }
     }
 
     public enum TransactionType

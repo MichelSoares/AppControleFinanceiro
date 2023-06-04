@@ -16,13 +16,13 @@ namespace AppControleFinanceiro.Libraries.Converters
 
             if (transaction == null) return "";
 
-            if(transaction.Type == TransactionType.Income)
+            if(transaction.type == TransactionType.Income)
             {
-                return transaction.Value.ToString("C");
+                return transaction.value.ToString("C");
             }
             else
             {
-                return $"- { transaction.Value.ToString("C")}";
+                return $"- { transaction.value.ToString("C")}";
             }
         }
 

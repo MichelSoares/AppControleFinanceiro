@@ -19,14 +19,14 @@ namespace AppControleFinanceiro.Repositories
 
         public List<Transaction> GetAll()
         {
-            return _database.GetCollection<Transaction>(collectionName).Query().OrderByDescending(t => t.Date).ToList();
+            return _database.GetCollection<Transaction>(collectionName).Query().OrderByDescending(t => t.date).ToList();
         }
 
         public void Add(Transaction transaction)
         {
             var col = _database.GetCollection<Transaction>(collectionName);
             col.Insert(transaction);
-            col.EnsureIndex(t => t.Date);
+            col.EnsureIndex(t => t.date);
         }
         public void Update(Transaction transaction) 
         {
@@ -36,7 +36,7 @@ namespace AppControleFinanceiro.Repositories
         public void Delete(Transaction transaction) 
         {
             var col = _database.GetCollection<Transaction>(collectionName);
-            col.Delete(transaction.Id);
+            col.Delete(transaction.id);
         }
     }
 }
