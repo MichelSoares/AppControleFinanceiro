@@ -25,7 +25,6 @@ namespace ControleFinanceiroAPI.Controllers
         }
 
         [HttpGet]
-
         public ActionResult ListAllTransaction()
         {
             try

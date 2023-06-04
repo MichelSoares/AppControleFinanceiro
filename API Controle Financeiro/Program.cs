@@ -1,7 +1,9 @@
+using AspNetCoreRateLimit;
 using ControleFinanceiroAPI.Context;
 using ControleFinanceiroAPI.Util;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -80,6 +82,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     });
 
+//anti "brute force" - AspNetCoreRateLimit
+builder.Services.AddMemoryCache();
+
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+//builder.Services.Configure<IpRateLimitPolicies>(builder.Configuration.GetSection("IpRateLimitPolicies")); //politica para clients especificos
+builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>(); 
+builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+
 var app = builder.Build();
 
 //app.UseCors(opt => opt.WithOrigins("https://www.apirequest.io").WithMethods("GET"));
@@ -90,6 +102,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseRouting();
+
+app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
 

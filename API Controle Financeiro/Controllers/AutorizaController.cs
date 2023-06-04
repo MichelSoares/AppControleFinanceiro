@@ -4,14 +4,16 @@ using ControleFinanceiroAPI.Models;
 using ControleFinanceiroAPI.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Xml.Linq;
 
 namespace ControleFinanceiroAPI.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class AutorizaController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -35,7 +37,7 @@ namespace ControleFinanceiroAPI.Controllers
             catch (Exception)
             {
                 throw;
-            }         
+            }
         }
 
         [HttpPost("login")]
