@@ -28,20 +28,24 @@ public partial class TransactionList : ContentPage
 
     private async Task Reload()
     {
-        /*var items = _transactionRepositor.GetAll();
+        //LiteDatabase
+        //var items = _transactionRepositor.GetAll();
+        //CollectionViewTransaction.ItemsSource = items;
+
+        //API
+        var items = await _transactionRequestRepository.GetAllAsync();
         CollectionViewTransaction.ItemsSource = items;
 
-         double income = items.Where(a => a.Type == Model.TransactionType.Income).Sum(a => a.Value);
-         double expense = items.Where(a => a.Type == Model.TransactionType.Expense).Sum(a => a.Value);
+        double income = items.Where(a => a.Type == Model.TransactionType.Income).Sum(a => a.Value);
+        double expense = items.Where(a => a.Type == Model.TransactionType.Expense).Sum(a => a.Value);
 
         double balance = income - expense;
 
         LabelIncome.Text = income.ToString("C");
-        LabelExpense.Text= expense.ToString("C");
-        LabelBalance.Text = balance.ToString("C");*/
+        LabelExpense.Text = expense.ToString("C");
+        LabelBalance.Text = balance.ToString("C");
 
-        var items = await _transactionRequestRepository.GetAllAsync();
-        CollectionViewTransaction.ItemsSource = items;
+
 
     }
 

@@ -55,11 +55,11 @@ namespace ControleFinanceiroAPI.Controllers
                 } 
                 else
                 {
-                    var ret = await GeraToken(userAutenticado);
-                    if (ret != null && ret.Authenticated)
+                    var retToken = await GeraToken(userAutenticado);
+                    if (retToken != null && retToken.Authenticated)
                     {
                         UtilHelper.myLogTxtRequest("(LoginApi) - Login API. Token gerado! (Ok)", _config, HttpContext);
-                        return Ok(ret.Token);
+                        return Ok(retToken);
                     }
 
                     UtilHelper.myLogTxtRequest("(LoginApi) - Login API (BadRequest) ", _config, HttpContext);

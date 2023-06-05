@@ -13,7 +13,7 @@ namespace AppControleFinanceiro.Repositories;
 public class TransactionRequestRepository : ITransactionRequestRepository
 {
     private static string serverAPI = "http://showroom.taassolucoes.com.br:8443/";
-    private static string Token = string.Empty;
+    private static TokenJWT tokenJWT;
     public UsuarioTokenDTO usuarioTokenDTO;
 
     public TransactionRequestRepository()
@@ -40,11 +40,11 @@ public class TransactionRequestRepository : ITransactionRequestRepository
         try
         {
             List<Transaction> trans = new List<Transaction>();
-            Token = await RequestTokenJWT();
+            tokenJWT = await RequestTokenJWT();
 
-            if (!string.IsNullOrEmpty(Token))
+            if (!string.IsNullOrEmpty(tokenJWT.Token))
             {
-                trans = await HttpRequestHelper.SendRequestAsyncObject<List<Transaction>>(serverAPI + "Transaction", HttpMethod.Get, Token, null);
+                trans = await HttpRequestHelper.SendRequestAsyncObject<List<Transaction>>(serverAPI + "Transaction", HttpMethod.Get, tokenJWT.Token, null);
             }
 
             return trans;
@@ -58,12 +58,12 @@ public class TransactionRequestRepository : ITransactionRequestRepository
     }
 
 
-    private async Task<string> RequestTokenJWT()
+    private async Task<TokenJWT> RequestTokenJWT()
     {
         try
         {
             //var response = await HttpRequestHelper.SendRequestAsync("https://192.168.10.129:7297/Autoriza", HttpMethod.Get, null);
-            var response = await HttpRequestHelper.SendRequestAsyncObject<string>(serverAPI + "Autoriza/login", HttpMethod.Post, null, usuarioTokenDTO);
+            var response = await HttpRequestHelper.SendRequestAsyncObject<TokenJWT>(serverAPI + "Autoriza/login", HttpMethod.Post, null, usuarioTokenDTO);
             return response;
         }
         catch (Exception)

@@ -27,15 +27,15 @@ public partial class TransactionEdit : ContentPage
 	{
 		 _transaction = transaction;
 
-		if(transaction.type == TransactionType.Income)
+		if(transaction.Type == TransactionType.Income)
 		
 			RadioIncome.IsChecked = true;
 		else
 			RadioExpense.IsChecked = true;
 		
-		EntryName.Text = transaction.name;
-		DatePickerDate.Date = transaction.date.Date;
-		EntryValue.Text = transaction.value.ToString();
+		EntryName.Text = transaction.Name;
+		DatePickerDate.Date = transaction.Date.Date;
+		EntryValue.Text = transaction.Value.ToString();
 	}
 
     private void OnButtonClicked_Save(object sender, EventArgs e)
@@ -53,11 +53,11 @@ public partial class TransactionEdit : ContentPage
     {
         Transaction transaction = new Transaction()
         {
-            id = _transaction.id,
-            type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expense,
-            name = EntryName.Text,
-            date = DatePickerDate.Date,
-            value = Convert.ToDouble(EntryValue.Text)
+            Id = _transaction.Id,
+            Type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expense,
+            Name = EntryName.Text,
+            Date = DatePickerDate.Date,
+            Value = Convert.ToDouble(EntryValue.Text)
         };
 
         //var repository = Handler.MauiContext.Services.GetService<ITransactionRepository>();
