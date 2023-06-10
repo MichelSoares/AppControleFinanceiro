@@ -15,7 +15,7 @@ namespace AppControleFinanceiro.Model
         public string Name { get; set; }
 
         [JsonPropertyName("date")]
-        public DateTimeOffset Date { get; set; }
+        public DateTime Date { get; set; }
 
         [JsonPropertyName("value")]
         public double Value { get; set; }

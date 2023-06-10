@@ -10,10 +10,14 @@ namespace AppControleFinanceiro.Views;
 public partial class TransactionAdd : ContentPage
 {
     private ITransactionRepository _repository;
-    public TransactionAdd(ITransactionRepository repository)
+    private readonly ITransactionRequestRepository _requestRepository;
+
+    public TransactionAdd(ITransactionRepository repository, ITransactionRequestRepository requestRepository)
     {
         _repository = repository;
+        _requestRepository = requestRepository;
         InitializeComponent();
+        
     }
 
     private void TapGestureRecognizerTapped_ToClose(object sender, TappedEventArgs e)
@@ -32,7 +36,7 @@ public partial class TransactionAdd : ContentPage
     {
         if (IsValidData().Result == false) return;
         SaveTransactionInDatabase();
-        
+
         Navigation.PopModalAsync();
         WeakReferenceMessenger.Default.Send<string>(string.Empty);
 
@@ -59,7 +63,8 @@ public partial class TransactionAdd : ContentPage
         };
 
         //var repository = Handler.MauiContext.Services.GetService<ITransactionRepository>();
-        _repository.Add(transaction);
+        //_repository.Add(transaction);
+        _requestRepository.AddAsync(transaction);
     }
 
     private async Task<bool> IsValidData()
