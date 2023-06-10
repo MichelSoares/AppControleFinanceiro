@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ControleFinanceiroAPI.Models;
 
@@ -7,6 +8,8 @@ namespace ControleFinanceiroAPI.Models;
 public class Transaction
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //[JsonIgnore]
     [Column("id")]
     public int Id { get; set; }
 
@@ -19,7 +22,8 @@ public class Transaction
     [Required]
     public string Name { get; set; }
 
-    [Column("date")]
+    [Column("date", TypeName = "timestamp without time zone")]
+    [DataType(DataType.Date)]
     [Required]
     public DateTime Date { get; set; }
 
@@ -30,6 +34,6 @@ public class Transaction
 
 public enum TransactionType
 {
-    Income,
-    Outcome
+    Income = 1,
+    Outcome = 2
 }

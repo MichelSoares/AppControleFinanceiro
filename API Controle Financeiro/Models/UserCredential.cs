@@ -8,6 +8,8 @@ namespace ControleFinanceiroAPI.Models;
 public class UserCredential
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [JsonIgnore]
     [Column("id")]
     //[JsonIgnore]
     public int Id { get; set; }

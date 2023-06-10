@@ -26,7 +26,7 @@ namespace ControleFinanceiroAPI.Migrations
                     table.PrimaryKey("PK_user_credential", x => x.id);
                 });
 
-            migrationBuilder.Sql("INSERT INTO user_credential(name, email, password) VALUES ('Michel Soares', 'admin@admin.com', '123456')");
+            migrationBuilder.Sql("INSERT INTO user_credential(name, email, password) VALUES ('Michel Soares', 'admin@admin.com', '89ee399281aeb43dc8e2e761959d8935')");
         }
 
         /// <inheritdoc />

@@ -20,7 +20,7 @@ namespace ControleFinanceiroAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     type = table.Column<int>(type: "integer", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     value = table.Column<double>(type: "numeric(10,2)", nullable: false)
                 },
                 constraints: table =>

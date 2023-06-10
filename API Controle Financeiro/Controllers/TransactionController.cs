@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using NpgsqlTypes;
 using System.Text.RegularExpressions;
 
 namespace ControleFinanceiroAPI.Controllers
@@ -92,7 +94,22 @@ namespace ControleFinanceiroAPI.Controllers
                 UtilHelper.myLogTxtRequest($"(UpdateTransaction) - Atualiza transação ID (Internal Server Error) ", _config, HttpContext);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao processar no servidor. \n" + ex.Message + "\n" + ex.StackTrace);
             }
-           
+
+            //Transação direta com o banco "TESTE" sem o EF
+            //var sql = "UPDATE public.transaction SET type=:TYPE, name=:NAME, date=:DATE, value=:VALUE WHERE id=:ID;";
+            //var commad = new NpgsqlCommand(sql);
+            //commad.Parameters.Add("TYPE", NpgsqlDbType.Integer);
+            //commad.Parameters.Add("NAME", NpgsqlDbType.Varchar);
+            //commad.Parameters.Add("DATE", NpgsqlDbType.Timestamp);
+            //commad.Parameters.Add("VALUE", NpgsqlDbType.Numeric);
+
+            //commad.Parameters[0].Value = transaction.Type;
+            //commad.Parameters[1].Value = transaction.Name;
+            //commad.Parameters[2].Value = transaction.Date;
+            //commad.Parameters[3].Value = transaction.Value;
+
+            //commad.Prepare();
+            //commad.ExecuteNonQuery();
         }
 
         [HttpDelete]
@@ -123,17 +140,26 @@ namespace ControleFinanceiroAPI.Controllers
         [HttpPost]
         public ActionResult AddTransaction(Transaction transaction)
         {
-            if(transaction is null)
+            try
             {
-                UtilHelper.myLogTxtRequest("(AddTransaction) - Adiciona transação (Bad request) ", _config, HttpContext);
-                return BadRequest();
+                if (transaction is null)
+                {
+                    UtilHelper.myLogTxtRequest("(AddTransaction) - Adiciona transação (Bad request) ", _config, HttpContext);
+                    return BadRequest();
+                }
+
+                _context.Transactions.Add(transaction);
+                _context.SaveChanges();
+
+                UtilHelper.myLogTxtRequest("(AddTransaction) - Adiciona transação (Ok) ", _config, HttpContext);
+                return new CreatedAtRouteResult("ObterTransaction", new { id = transaction.Id }, transaction);
             }
-
-            _context.Transactions.Add(transaction);
-            _context.SaveChanges();
-
-            UtilHelper.myLogTxtRequest("(AddTransaction) - Adiciona transação (Ok) ", _config, HttpContext);
-            return new CreatedAtRouteResult("ObterTransaction", new { id = transaction.Id }, transaction);
+            catch (Exception ex)
+            {
+                UtilHelper.myLogTxtRequest($"(AddTransaction) - Adiciona transação (Internal Server Error) ", _config, HttpContext);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao processar no servidor. \n" + ex.Message + "\n" + ex.StackTrace);
+            }
+            
         }
     }
 }
