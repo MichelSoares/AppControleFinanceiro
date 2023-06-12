@@ -35,7 +35,7 @@ public partial class TransactionAdd : ContentPage
     private void OnButtonClicked_Save(object sender, EventArgs e)
     {
         if (IsValidData().Result == false) return;
-        SaveTransactionInDatabase();
+        SalveTransacao();
 
         Navigation.PopModalAsync();
         WeakReferenceMessenger.Default.Send<string>(string.Empty);
@@ -52,7 +52,7 @@ public partial class TransactionAdd : ContentPage
 
     }
 
-    private void SaveTransactionInDatabase()
+    private void SalveTransacao()
     {
         Transaction transaction = new Transaction()
         {

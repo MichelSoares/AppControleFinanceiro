@@ -91,7 +91,8 @@ public partial class TransactionList : ContentPage
         {
             Transaction transaction = (Transaction)e.Parameter;
             //_transactionRepositor.Delete((Transaction)sender);
-            _transactionRepositor.Delete(transaction);
+            //_transactionRepositor.Delete(transaction);
+            await _transactionRequestRepository.DeleteAsync(transaction.Id);
 
             Reload();
         }

@@ -5,7 +5,7 @@ namespace AppControleFinanceiro.Repositories;
 public interface ITransactionRequestRepository
 {
     Task AddAsync(Transaction transaction);
-    Task DeleteAsync(Transaction transaction);
+    Task DeleteAsync(int id);
     Task<List<Transaction>> GetAllAsync();
-    Task UpdateAsync(Transaction transaction);
+    Task UpdateAsync(int id, Transaction transaction);
 }

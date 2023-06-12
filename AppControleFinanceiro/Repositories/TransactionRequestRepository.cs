@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace AppControleFinanceiro.Repositories;
 
 public class TransactionRequestRepository : ITransactionRequestRepository
@@ -34,7 +35,7 @@ public class TransactionRequestRepository : ITransactionRequestRepository
         {
             if (!string.IsNullOrEmpty(tokenJWT.Token))
             {
-                var response = await HttpRequestHelper.SendRequestAsyncObject<Transaction>(serverAPI + "Transaction", HttpMethod.Post, tokenJWT.Token, transaction);
+                var response = await HttpRequestHelper.SendRequestAsyncObject<Transaction>(serverAPI + "Transaction", HttpMethod.Post, tokenJWT.Token, transaction, null, null);
             }
         }
         catch (Exception ex)
@@ -44,30 +45,45 @@ public class TransactionRequestRepository : ITransactionRequestRepository
         }
     }
 
-    public Task DeleteAsync(Transaction transaction)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            if (!string.IsNullOrEmpty(tokenJWT.Token))
+            {
+                var response = await HttpRequestHelper.SendRequestAsyncObject<Transaction>(serverAPI + "Transaction", HttpMethod.Delete, tokenJWT.Token, null, "id", id.ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            await Console.Out.WriteLineAsync("\n\n" + ex.Message + "\n\n");
+        }
     }
 
-    public Task UpdateAsync(Transaction transaction)
+    public async Task UpdateAsync(int id, Transaction transaction)
     {
-        //if (!string.IsNullOrEmpty(tokenJWT.Token))
-        //{
-        //    var response = await HttpRequestHelper.SendRequestAsyncObject<Transaction>(serverAPI + "Transaction", HttpMethod.Post, tokenJWT.Token, transaction);
-        //}
-
-        throw new NotImplementedException();
+        try
+        {
+            if (!string.IsNullOrEmpty(tokenJWT.Token))
+            {
+                var response = await HttpRequestHelper.SendRequestAsyncObject<string>(serverAPI + "Transaction", HttpMethod.Put, tokenJWT.Token, transaction, null, id.ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            await Console.Out.WriteLineAsync("\n\n" + ex.Message + "\n\n");
+        }
     }
 
     public async Task<List<Transaction>> GetAllAsync()
     {
         try
         {
-            if(tokenJWT == null || (DateTime.Now.Minute - tokenJWT.Expiration.Minute) >= 120) tokenJWT = await RequestTokenJWT();
+            if (tokenJWT == null || (DateTime.Now.Minute - tokenJWT.Expiration.Minute) >= 120) tokenJWT = await RequestTokenJWT();
 
             if (!string.IsNullOrEmpty(tokenJWT.Token))
-            {      
-                trans = await HttpRequestHelper.SendRequestAsyncObject<List<Transaction>>(serverAPI + "Transaction", HttpMethod.Get, tokenJWT.Token, null);
+            {
+                trans = await HttpRequestHelper.SendRequestAsyncObject<List<Transaction>>(serverAPI + "Transaction", HttpMethod.Get, tokenJWT.Token, null, null);
                 return trans;
             }
 
@@ -77,7 +93,7 @@ public class TransactionRequestRepository : ITransactionRequestRepository
         {
             await Console.Out.WriteLineAsync("\n\n" + ex.Message);
             return null;
-            
+
         }
 
     }
@@ -87,7 +103,7 @@ public class TransactionRequestRepository : ITransactionRequestRepository
         try
         {
             //var response = await HttpRequestHelper.SendRequestAsync("https://192.168.10.129:7297/Autoriza", HttpMethod.Get, null);
-            var response = await HttpRequestHelper.SendRequestAsyncObject<TokenJWT>(serverAPI + "Autoriza/login", HttpMethod.Post, null, usuarioTokenDTO);
+            var response = await HttpRequestHelper.SendRequestAsyncObject<TokenJWT>(serverAPI + "Autoriza/login", HttpMethod.Post, null, usuarioTokenDTO, null, null);
             return response;
         }
         catch (Exception)

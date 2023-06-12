@@ -79,14 +79,14 @@ namespace ControleFinanceiroAPI.Controllers
             {
                 if (id != transaction.Id)
                 {
-                    UtilHelper.myLogTxtRequest($"(UpdateTransaction) - Busca transação por ID (Bad Request) ", _config, HttpContext);
+                    UtilHelper.myLogTxtRequest($"(UpdateTransaction) - Atualiza transação por ID (Bad Request) ", _config, HttpContext);
                     return BadRequest("Parametro inválido.");
                 }
 
                 _context.Entry(transaction).State = EntityState.Modified;
                 _context.SaveChanges();
 
-                UtilHelper.myLogTxtRequest("(UpdateTransaction) - Busca transação por ID (OK) ", _config, HttpContext);
+                UtilHelper.myLogTxtRequest("(UpdateTransaction) - Atualiza transação por ID (OK) ", _config, HttpContext);
                 return Ok();
             }
             catch (Exception ex)

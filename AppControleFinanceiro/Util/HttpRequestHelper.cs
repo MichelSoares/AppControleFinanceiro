@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Net.Http.Json;
 
 namespace AppControleFinanceiro.Util;
 
@@ -40,10 +35,28 @@ public class HttpRequestHelper
     }
 
     //request que me devolve um JSON com um objeto genérico deserializado, resposta tbm genérica.
-    public static async Task<TResponse> SendRequestAsyncObject<TResponse>(string endpoint, HttpMethod method, string token = null, object obj = null)
+    public static async Task<TResponse> SendRequestAsyncObject<TResponse>(string endpoint, HttpMethod method, string token = null, object obj = null, string parametroUriKey = null, string parametroUriValue = null)
     {
+        HttpRequestMessage request;
 
-        HttpRequestMessage request = new HttpRequestMessage(method, endpoint);
+        //QueryParameter
+        if(parametroUriKey is not null && parametroUriValue is not null)
+        {
+            UriBuilder uriBuilder = new UriBuilder(endpoint);
+            var queryParams = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
+            queryParams[parametroUriKey] = parametroUriValue;
+            uriBuilder.Query = queryParams.ToString();
+            request = new HttpRequestMessage(method, uriBuilder.Uri);
+        } 
+        else if (parametroUriValue is not null && parametroUriKey is null)
+        {
+            request = new HttpRequestMessage(method, endpoint + "/" + parametroUriValue);
+        } 
+        else
+        {
+            //request = parametroUriValue == null ? new HttpRequestMessage(method, endpoint) : new HttpRequestMessage(method, endpoint + "/" + parametroUriValue);
+            request = new HttpRequestMessage(method, endpoint);
+        }
 
         if (!string.IsNullOrEmpty(token))
         {

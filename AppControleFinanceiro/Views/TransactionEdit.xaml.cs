@@ -11,10 +11,12 @@ public partial class TransactionEdit : ContentPage
 {
 	private Transaction _transaction;
     private ITransactionRepository _repository;
+    private readonly ITransactionRequestRepository _transactionRequest;
 
-    public TransactionEdit(ITransactionRepository repository)
+    public TransactionEdit(ITransactionRepository repository, ITransactionRequestRepository transactionRequest)
     {
         InitializeComponent();
+        _transactionRequest = transactionRequest;
         _repository = repository;
     }
 
@@ -41,7 +43,7 @@ public partial class TransactionEdit : ContentPage
     private void OnButtonClicked_Save(object sender, EventArgs e)
     {
         if (IsValidData().Result == false) return;
-        SaveTransactionInDatabase();
+        SalveTransacao();
 
         Navigation.PopModalAsync();
         WeakReferenceMessenger.Default.Send<string>(string.Empty);
@@ -49,7 +51,7 @@ public partial class TransactionEdit : ContentPage
 
     }
 
-    private void SaveTransactionInDatabase()
+    private void SalveTransacao()
     {
         Transaction transaction = new Transaction()
         {
@@ -59,9 +61,12 @@ public partial class TransactionEdit : ContentPage
             Date = DatePickerDate.Date,
             Value = Convert.ToDouble(EntryValue.Text)
         };
-
         //var repository = Handler.MauiContext.Services.GetService<ITransactionRepository>();
-        _repository.Update(transaction);
+        //_repository.Update(transaction);
+
+        _transactionRequest.UpdateAsync(transaction.Id, transaction);
+        Navigation.PopModalAsync();
+        WeakReferenceMessenger.Default.Send<string>(string.Empty);
     }
 
     private async Task<bool> IsValidData()
