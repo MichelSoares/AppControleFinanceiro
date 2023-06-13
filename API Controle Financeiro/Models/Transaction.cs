@@ -30,6 +30,13 @@ public class Transaction
     [Column("value", TypeName = "decimal(10,2)")]
     [Required]
     public double Value { get; set; }
+
+    [Column("user_credential_id")]
+    [Required]
+    public int UserCredentialId { get; set; }
+
+    //[Column("user_transaction")]
+    //public UserCredential? UserCredential { get; set; }
 }
 
 public enum TransactionType

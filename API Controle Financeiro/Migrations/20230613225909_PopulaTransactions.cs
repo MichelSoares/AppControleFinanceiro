@@ -10,9 +10,9 @@ namespace ControleFinanceiroAPI.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder mb)
         {
-            mb.Sql("INSERT INTO public.transaction(type, name, date, value) VALUES (1, 'salário', '2023-05-28', '100000.00');");
-            mb.Sql("INSERT INTO public.transaction(type, name, date, value) VALUES (1, 'free lance', '2023-05-28', '4500.00');");
-            mb.Sql("INSERT INTO public.transaction(type, name, date, value) VALUES (2, 'Alienware M15 R7', '2023-05-28', '11500.00');");
+            mb.Sql("INSERT INTO public.transaction(type, name, date, value, user_credential_id) VALUES (1, 'salário', '2023-05-28', '100000.00', 1);");
+            mb.Sql("INSERT INTO public.transaction(type, name, date, value, user_credential_id) VALUES (1, 'free lance', '2023-05-28', '4500.00', 1);");
+            mb.Sql("INSERT INTO public.transaction(type, name, date, value, user_credential_id) VALUES (2, 'Alienware M15 R7', '2023-05-28', '11500.00', 1);");
         }
 
         /// <inheritdoc />

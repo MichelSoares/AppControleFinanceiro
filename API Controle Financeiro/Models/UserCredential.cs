@@ -28,4 +28,7 @@ public class UserCredential
     [Column("password")]
     [Required]
     public string Password { get; set; }
+
+    [Column("transactions")]
+    public ICollection<Transaction>? Transactions { get; set; }
 }
